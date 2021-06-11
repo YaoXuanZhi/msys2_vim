@@ -84,6 +84,24 @@ if "x%~1" == "x-shell" (
   call :removequotes msys2_arg
   for %%a in (!msys2_arg!) do set /a msys2_shiftCounter+=1
 )& shift& shift& set /a msys2_shiftCounter+=1& goto :checkparams
+if "x%~1" == "x-outside_exec" (
+  if "x%~2" == "x" (
+    echo Please input bash shell command for -outside_exec parameter. 1>&2
+    exit /b 2
+  )
+
+  set OUTSIDE_CMD="%~2"
+  @REM call :substituteparens OUTSIDE_CMD
+  @REM call :removequotes OUTSIDE_CMD
+
+  set msys2_arg="%~2"
+  call :substituteparens msys2_arg
+  call :removequotes msys2_arg
+
+  rem Increment msys2_shiftCounter by number of words in argument (as cmd.exe saw it).
+  rem (Note that this form of FOR IN loop uses same delimiters as parameters.)
+  for %%a in (!msys2_arg!) do set /a msys2_shiftCounter+=1
+)& shift& shift& set /a msys2_shiftCounter+=1& goto :checkparams
 
 rem Collect remaining command line arguments to be passed to shell
 if %msys2_shiftCounter% equ 0 set SHELL_ARGS=%* & goto cleanvars
@@ -121,9 +139,17 @@ if NOT EXIST "%WD%mintty.exe" goto startsh
 set MSYSCON=mintty.exe
 :startmintty
 if not defined MSYS2_NOSTART (
-  start "%CONTITLE%" "%WD%mintty" -i "/%CONICON%" -t "%CONTITLE%" "/usr/bin/%LOGINSHELL%" --login !SHELL_ARGS!
+  if not defined OUTSIDE_CMD (
+    start "%CONTITLE%" "%WD%mintty" -i "/%CONICON%" -t "%CONTITLE%" "/usr/bin/%LOGINSHELL%" --login !SHELL_ARGS!
+  ) else (
+    start "%CONTITLE%" "%WD%mintty" -i "/%CONICON%" -t "%CONTITLE%" "/usr/bin/%LOGINSHELL%" --login !SHELL_ARGS! -c %OUTSIDE_CMD%
+  )
 ) else (
-  "%WD%mintty" -i "/%CONICON%" -t "%CONTITLE%" "/usr/bin/%LOGINSHELL%" --login !SHELL_ARGS!
+  if not defined OUTSIDE_CMD (
+    "%WD%mintty" -i "/%CONICON%" -t "%CONTITLE%" "/usr/bin/%LOGINSHELL%" --login !SHELL_ARGS!
+  ) else (
+    "%WD%mintty" -i "/%CONICON%" -t "%CONTITLE%" "/usr/bin/%LOGINSHELL%" --login !SHELL_ARGS! -c %OUTSIDE_CMD%
+  )
 )
 exit /b %ERRORLEVEL%
 
@@ -204,6 +230,7 @@ echo     -here                            Use current directory as working
 echo                                      directory
 echo     -where DIRECTORY                 Use specified DIRECTORY as working
 echo                                      directory
+echo     -outside_exec COMMAND            Input Outside Bash-Command
 echo     -[use-]full-path                 Use full current PATH variable
 echo                                      instead of trimming to minimal
 echo     -no-start                        Do not use "start" command and
