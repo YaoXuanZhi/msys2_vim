@@ -20,6 +20,8 @@ if not exist "%~dp0config.bat" (
 REM 创建msys2_shell_ex.cmd文件链接
 if not exist %dest_path% (mklink %dest_path% %msys2_shell_ex_bat%)
 
+GOTO :eof
+
 :removequotes
 FOR /F "delims=" %%A IN ('echo %%%1%%') DO set %1=%%~A
 GOTO :eof
