@@ -1,6 +1,6 @@
 @echo off
 
-call %~dp0config.bat
+call "%~dp0config.bat"
 
 set ROOT=%1
 call :removequotes ROOT

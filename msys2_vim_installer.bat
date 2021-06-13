@@ -4,7 +4,7 @@ Md "%WinDir%\System32\test_permissions" 2>NUL||(Echo 请使用右键管理员身份运行&&P
 Rd "%WinDir%\System32\test_permissions" 2>NUL
 SetLocal EnableDelayedExpansion
 
-call %~dp0create_depends_env.bat
+call "%~dp0create_depends_env.bat"
 
 ::设置右键菜单项的名称
 set desc="Msys2-Vim"

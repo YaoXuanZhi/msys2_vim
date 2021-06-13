@@ -10,11 +10,12 @@ set msys2_shell_ex_bat=%~dp0msys2_shell_ex.cmd
 set dest_path="%msys2_dir%\msys2_shell_ex.cmd"
 
 @REM 自动生成config.bat
-if not exist "%~dp0config.bat" (
-    echo @echo off>> %~dp0config.bat
-    echo set msys2_shell_bat="%msys2_dir%\msys2_shell_ex.cmd">> %~dp0config.bat
-    echo set msys2_type=-mingw64>> %~dp0config.bat
-    echo set pause_cmd=read -p 'Please press any key after'>> %~dp0config.bat
+set config_path="%~dp0config.bat"
+if not exist %config_path% (
+    echo @echo off>> %config_path%
+    echo set msys2_install_dir="%msys2_dir%">> %config_path%
+    echo set msys2_type=-mingw64>> %config_path%
+    echo set pause_cmd=read -p 'Please press any key after'>> %config_path%
 )
 
 REM 创建msys2_shell_ex.cmd文件链接
