@@ -4,8 +4,8 @@ setlocal EnableDelayedExpansion
 set "WD=%__CD__%"
 
 if NOT EXIST "%WD%msys-2.0.dll" (
-  if EXIST "%WD%\usr\bin\" (
-    set "WD=%WD%\usr\bin\"
+  if EXIST "%WD%usr\bin\" (
+    set "WD=%WD%usr\bin\"
   )
 )
 
