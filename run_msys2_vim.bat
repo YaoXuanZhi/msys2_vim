@@ -2,6 +2,10 @@
 
 call "%~dp0config.bat"
 
+cd /d %msys2_install_dir%
+
+set msys2_shell_bat="%~dp0\msys2_shell_ex.cmd"
+
 set ROOT=%1
 call :removequotes ROOT
 

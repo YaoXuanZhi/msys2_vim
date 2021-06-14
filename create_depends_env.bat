@@ -6,9 +6,6 @@ set /p msys2_dir=
 
 call :removequotes msys2_dir
 
-set msys2_shell_ex_bat=%~dp0msys2_shell_ex.cmd
-set dest_path="%msys2_dir%\msys2_shell_ex.cmd"
-
 @REM 自动生成config.bat
 set config_path="%~dp0config.bat"
 if not exist %config_path% (
@@ -17,9 +14,6 @@ if not exist %config_path% (
     echo set msys2_type=-mingw64>> %config_path%
     echo set pause_cmd=read -p 'Please press any key after'>> %config_path%
 )
-
-REM 创建msys2_shell_ex.cmd文件链接
-if not exist %dest_path% (mklink %dest_path% %msys2_shell_ex_bat%)
 
 GOTO :eof
 
