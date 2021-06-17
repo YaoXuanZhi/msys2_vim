@@ -11,6 +11,7 @@ set config_path="%~dp0config.bat"
 if not exist %config_path% (
     echo @echo off>> %config_path%
     echo set msys2_install_dir="%msys2_dir%">> %config_path%
+    echo set msys2_shell_bat="%msys2_dir%\msys2_shell.cmd">> %config_path%
     echo set msys2_type=-mingw64>> %config_path%
     echo set pause_cmd=read -p 'Please press any key after'>> %config_path%
 )
