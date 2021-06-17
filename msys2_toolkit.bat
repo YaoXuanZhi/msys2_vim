@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 rem ----------------------
 rem 注意使用GBK编码编辑此文件
 rem ----------------------
@@ -117,3 +118,14 @@ rem --------------------------------------------------------------------------
 :end
 
 pause
+
+GOTO :eof
+
+:convertpath
+FOR /F "delims=" %%A IN ('echo %%%1%%') DO (
+  set _path=%%~A
+  set _path=!_path:\=/!
+  set _path=!_path::=!
+  set %1=/!_path!
+)
+GOTO :eof
